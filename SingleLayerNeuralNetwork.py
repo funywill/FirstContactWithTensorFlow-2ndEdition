@@ -8,7 +8,9 @@ W = tf.Variable(tf.zeros([784, 10]))
 b = tf.Variable(tf.zeros([10]))
 matm = tf.matmul(x, W)
 y = tf.nn.softmax(tf.matmul(x, W) + b)
+# the correct labels
 y_ = tf.placeholder("float", [None, 10])
+# the cross entropy loss
 cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
 train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)
 
