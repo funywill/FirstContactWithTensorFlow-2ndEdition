@@ -5,7 +5,7 @@ import seaborn as sns
 import tensorflow as tf
 
 num_vectors = 1000
-num_clusters = 3
+num_clusters = 4
 num_steps = 100
 vector_values = []
 for i in range(num_vectors):
@@ -17,11 +17,17 @@ for i in range(num_vectors):
                               np.random.normal(0.8, 0.5)])
 df = pd.DataFrame({"x": [v[0] for v in vector_values],
                    "y": [v[1] for v in vector_values]})
+# show the data in pandas DataFrame
 sns.lmplot("x", "y", data=df, fit_reg=False, size=7)
 plt.show()
+
 vectors = tf.constant(vector_values)
 centroids = tf.Variable(tf.slice(tf.random_shuffle(vectors),
                                  [0, 0], [num_clusters, -1]))
+print(vectors.get_shape())
+print(centroids.get_shape())
+
+#expand the vectors at dims 0 and centroids at dims 1, then their shape matched.
 expanded_vectors = tf.expand_dims(vectors, 0)
 expanded_centroids = tf.expand_dims(centroids, 1)
 
@@ -56,6 +62,7 @@ for step in range(num_steps):
 print("centroids")
 print(centroid_values)
 
+# show the result in the assignment_values tensor
 data = {"x": [], "y": [], "cluster": []}
 for i in range(len(assignment_values)):
     data["x"].append(vector_values[i][0])
